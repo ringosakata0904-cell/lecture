@@ -1,8 +1,6 @@
 # バイオインフォマティクス講義資料
 
-一般教養から学部専門の入口までを想定した**バイオインフォマティクス**の自習用Jupyterノートブック集です。
-ノートブックは大きく **`ml/`(機械学習とバイオインフォマティクス編)** と **`phylogenetics/`(系統解析編)** の2系統に分かれており、それぞれ独立に動作します。
-生物学を出発点として、回帰・分類・クラスタリング・次元削減・タンパク質言語モデル・系統樹推定までを、生き物の具体例を通じて体験できます。
+一般教養から学部専門の入口までを想定した **バイオインフォマティクス** の自習用Jupyter Notebook集です。生物学を出発点として、回帰・分類・クラスタリング・次元削減・タンパク質言語モデル・系統樹推定までを、生き物の具体例を通じて学びます。
 
 ## ディレクトリ構成
 
@@ -24,11 +22,11 @@ lecture/
 
 ## 動かし方
 
-各ノートブックをJupyter、VS Code、あるいはGoogle colabで開き、上のセルから順に実行してください。各ノートブックの先頭セルに `%pip install …` が書かれており、それがそのノートブック専用の依存リストとなります。リポジトリ全体の`requirements.txt`はありません。
+各ノートブックをJupyter、VS Code、あるいはGoogle colabで開き、上のセルから順に実行してください。各ノートブックの先頭セルに `%pip install …` が書かれており、それがそのノートブックの依存リストとなります。
 
 - **`ml/1_penguins.ipynb`** は `palmerpenguins` パッケージ経由でデータを取得します。
 - **`ml/2_wine.ipynb`** は `archive.ics.uci.edu` からCSVを直接取得します。
-- **`ml/3_pLM.ipynb` と `ml/4_gpcr.ipynb`** は初回実行時に Hugging Face から `Rostlab/prot_bert`(約1.6GB)をダウンロードします。CUDAが使える環境では自動的にGPUを利用します。
+- **`ml/3_pLM.ipynb` と `ml/4_gpcr.ipynb`** は初回実行時にHugging Faceから `Rostlab/prot_bert`(約1.6GB)をダウンロードします。CUDAが使える環境では自動的にGPUを利用します。
 - **系統解析編** はリポジトリ内の FASTA ファイル(`phylogenetics/birds/`, `phylogenetics/mammals/`)を直接読み込みます。「本格編」セクションでは `MAFFT` と `IQ-TREE` の外部ツールを別途インストールします(ノートブック内に手順あり)。
 
 > プロットの日本語表示には `matplotlib-fontja` を使用しています。`seaborn` の `sns.set_*` 系を呼ぶと `rcParams` がリセットされるため、必ず **`sns.set_style()` → `import matplotlib_fontja` → `rcParams` 上書き** の順で設定してください。順序を入れ替えると豆腐(□□□)になります。
