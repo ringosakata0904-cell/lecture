@@ -29,13 +29,13 @@ lecture/
 - **`ml/3_pLM.ipynb` と `ml/4_gpcr.ipynb`** は初回実行時にHugging Faceから `Rostlab/prot_bert`(約1.6GB)をダウンロードします。CUDAが使える環境では自動的にGPUを利用します。
 - **系統解析編** はリポジトリ内の FASTA ファイル（`phylogenetics/birds/`, `phylogenetics/mammals/`）を直接読み込みます。「本格編」セクションでは `MAFFT` と `IQ-TREE` の外部ツールを別途インストールします（ノートブック内に手順あり）。
 
-> プロットの日本語表示には `matplotlib-fontja` を使用しています。`seaborn` の `sns.set_*` 系を呼ぶと `rcParams` がリセットされるため、必ず **`sns.set_style()` → `import matplotlib_fontja` → `rcParams` 上書き** の順で設定してください。順序を入れ替えると豆腐(□□□)になります。
+> プロットの日本語表示には `matplotlib-fontja` を使用しています。`seaborn` の `sns.set_*` 系を呼ぶと `rcParams` がリセットされるため、必ず`sns.set_style()` → `import matplotlib_fontja` → `rcParams` 上書きの順で設定してください。順序を入れ替えると豆腐(□□□)になります。
 
 ## 機械学習とバイオインフォマティクス編 (`ml/`)
 
 ### `1_penguins.ipynb` — Palmer Penguinsで機械学習一巡り
 
-**南極のパーマー諸島の3種のペンギン(Adelie/Chinstrap/Gentoo、約340個体)** の形態データをもちいて、機械学習の主要トピックを一気に体験する入門Notebookです。「くちばしの長さ・深さ」「ヒレの長さ」「体重」「島」「性別」などのシンプルな数値・カテゴリ変数で、以下を一通り実行します。
+**パーマー諸島に生息する3種のペンギン(Adelie/Chinstrap/Gentoo、約340個体)** の形態データをもちいて、機械学習の主要トピックを一気に体験する入門Notebookです。「くちばしの長さ・深さ」「ヒレの長さ」「体重」「島」「性別」などのシンプルな数値・カテゴリ変数で、以下を一通り実行します。
 
 - **教師あり学習**
   - 一般化線形モデル（GLM）— ロジスティック回帰で**性別**を予測。係数・標準誤差・p値の意味を学ぶ
@@ -60,7 +60,7 @@ lecture/
 - **階層的クラスタリング** — ラベル(赤/白)を与えずに、化学組成だけから赤ワインと白ワインを分離できるか確認
 - **主成分分析(PCA）** — 因子負荷量を見て「どの化学変量が主成分に効いているか」を読み解く
 
-**学習のねらい**: 線形 → 正則化 → ツリーアンサンブル → ニューラルネットという**モデル複雑度の階段**を実データの上で踏み、それぞれが「何を解決するために生まれた手法か」を理解します。
+**学習のねらい**: 線形 → 正則化 → ツリーアンサンブル → ニューラルネットと、**モデル複雑度の階段**を実データの上で踏んでいき、それぞれが「何を解決するために生まれた手法か」を考えます。
 
 ### `3_pLM.ipynb` — タンパク質言語モデル
 
@@ -71,7 +71,7 @@ lecture/
 - **機械学習による分類** — ロジスティック回帰とランダムフォレストの両方で分類モデルを学習。両者の精度を比較
 - **新規タンパク質への適用** — 学習に使っていない配列を渡して予測を確認
 
-**学習のねらい**: ProtBERTは「汎用的な事前学習済み」モデルですが、その汎用的なモデルでもほとんどそのまま特定の問題に応用できる、という大規模言語モデルの強力な特性を体感します。
+**学習のねらい**: ProtBERTは「汎用的な事前学習済み」モデルですが、その汎用的なモデルでもほとんどそのまま特定の問題に応用できる、という大規模言語モデルならではの強力な特性を体感します。
 
 ### `4_gpcr.ipynb` — GPCR-リガンド親和性予測（創薬への入口）
 
@@ -132,10 +132,9 @@ FASTAヘッダの書式は独自フォーマットで、位置で意味が決ま
 PhyloPic 画像ディレクトリには必ず `phylopic_attribution.tsv` が同梱されており、アーティスト名・ライセンスURL・`matched_level`(その種そのもの / 属レベル / 上位分類のシルエット、のいずれか)が記録されています。**画像の追加・削除時はこのファイルも必ず更新してください**(CCライセンス遵守のため)。
 
 ## ライセンス・出典
-
+- ペンギンデータ: [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/)
+- ワインデータ: [UCI Machine Learning Repository — Wine Quality](https://doi.org/10.24432/C5PC7J)
+- シルエット画像: [PhyloPic](https://www.phylopic.org/)(CCライセンス、各 `phylopic_attribution.tsv` を参照)
+- ProtBERT: Elnaggar A *et al.* (2022) *IEEE Trans Pattern Anal Mach Intell*, 44(10):7112–7127
 - 配列データ: NCBI の公開データ
 - GPCR構造: [AlphaFold Protein Structure Database](https://alphafold.ebi.ac.uk/)
-- シルエット画像: [PhyloPic](https://www.phylopic.org/)(CCライセンス、各 `phylopic_attribution.tsv` を参照)
-- ワインデータ: [UCI Machine Learning Repository — Wine Quality](https://doi.org/10.24432/C5PC7J)
-- ペンギンデータ: [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/)
-- ProtBERT: Elnaggar A *et al.* (2022) *IEEE Trans Pattern Anal Mach Intell*, 44(10):7112–7127
