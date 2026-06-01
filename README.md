@@ -11,11 +11,12 @@ lecture/
 │   ├── 2_wine.ipynb
 │   ├── 3_pLM.ipynb
 │   └── 4_gpcr.ipynb
-├── phylogenetics/               # 系統解析編(2ノートブック + データ)
+├── phylogenetics/               # 系統解析編(3ノートブック + データ)
 │   ├── 1_birds.ipynb
 │   ├── 2_mammals.ipynb
+│   ├── 3_gpcr.ipynb
 │   ├── birds/                   # 31種の鳥類 cytb 配列+メタデータ+PhyloPic
-│   ├── mammals/                 # 37種の哺乳類 cytb 配列+メタデータ+PhyloPic
+│   ├── mammals/                 # 38種の哺乳類 cytb 配列+メタデータ+PhyloPic
 │   └── gpcr/                    # 25種のヒトGPCR 配列+UniProt索引+AlphaFold PDB
 └── images/                      # ノートブックから参照される画像素材
 ```
@@ -27,7 +28,7 @@ lecture/
 - **`ml/1_penguins.ipynb`** は `palmerpenguins` パッケージ経由でデータを取得します。
 - **`ml/2_wine.ipynb`** は `archive.ics.uci.edu` からCSVを直接取得します。
 - **`ml/3_pLM.ipynb` と `ml/4_gpcr.ipynb`** は初回実行時にHugging Faceから `Rostlab/prot_bert`(約1.6GB)をダウンロードします。CUDAが使える環境では自動的にGPUを利用します。
-- **系統解析編** はリポジトリ内の FASTA ファイル（`phylogenetics/birds/`, `phylogenetics/mammals/`）を直接読み込みます。「本格編」セクションでは `MAFFT` と `IQ-TREE` の外部ツールを別途インストールします（ノートブック内に手順あり）。
+- **系統解析編** はリポジトリ内の配列ファイル（`phylogenetics/birds/`, `phylogenetics/mammals/`, `phylogenetics/gpcr/`）を直接読み込みます。「本格編」セクションでは `MAFFT` と `IQ-TREE` の外部ツールを別途インストールします（ノートブック内に手順あり）。鳥類・哺乳類では IQ-TREE の `--date` による分子時計、GPCR では AlphaFold 構造を使った構造系統樹（`tmtools` / `py3Dmol`）も扱います。
 
 > プロットの日本語表示には `matplotlib-fontja` を使用しています。`seaborn` の `sns.set_*` 系を呼ぶと `rcParams` がリセットされるため、必ず`sns.set_style()` → `import matplotlib_fontja` → `rcParams` 上書きの順で設定してください。順序を入れ替えると豆腐(□□□)になります。
 
@@ -98,17 +99,28 @@ lecture/
   - **MAFFT** で多重配列アラインメント
   - **IQ-TREE** で **最尤法(Maximum Likelihood)** による系統樹推定
   - **ブートストラップ** で各枝の信頼度を評価
+  - **分子時計(molecular clock)** — IQ-TREE の `--date` で、化石較正点(ワニ×鳥類の分岐 ≒ 2.5億年前)を手がかりに枝の長さを「年代」に変換。単一遺伝子・深い1点較正・配列の飽和といった、分子時計を難しくする要因も体験します
 
-**学習のねらい**: 「進化距離推定」「系統樹推定」「内部枝の信頼度評価」という系統解析の三本柱を、鳥類進化に思いを馳せながら身につけます。
+**学習のねらい**: 「進化距離推定」「系統樹推定」「内部枝の信頼度評価」「分岐年代推定」という系統解析の柱を、鳥類進化に思いを馳せながら身につけます。
 
-### `2_mammals.ipynb` — 海に戻った哺乳類の系統樹
+### `2_mammals.ipynb` — 鯨が歩んだ道をたどろう（海に戻った哺乳類の系統樹）
 
-**37種の哺乳類**（ヒゲクジラ亜目7種、ハクジラ亜目15種、鰭脚類6種、海牛目2種、ラッコ、ホッキョクグマ、および陸上の姉妹群5種）の *cytb* 配列から系統樹を作り、**陸上から海への独立した進出が哺乳類進化で何度起きたか**を観察します。
+**38種の哺乳類**（ハクジラ亜目15種、ヒゲクジラ亜目7種、鰭脚類6種、陸上の姉妹群5種、海牛目2種、ラッコ、ホッキョクグマ、および**外群としてのヒト**1種）の *cytb* 配列から系統樹を作り、**陸上から海への独立した進出が哺乳類進化で何度起きたか**を観察します。
 
-- **解析の流れ**(入門編 + 本格編)は `1_birds.ipynb` と同じく、シンプルなNJ法 → MAFFT/IQ-TREEによる最尤法という二段構え
+- **解析の流れ**(入門編 + 本格編)は `1_birds.ipynb` と同じく、シンプルなNJ法 → MAFFT/IQ-TREEによる最尤法という二段構え。`--date` による分岐年代推定も行います
 - **生物学的考察** — できあがった樹を読みながら、「クジラ・アザラシ・ジュゴン・ラッコ・ホッキョクグマがそれぞれ独立に海洋適応した」という哺乳類進化の壮大なドラマを観察します
 
 **学習のねらい**: 系統樹を**読み解く力**を養います。鳥類セットで身につけた手法を別のデータに適用し、樹の形から進化のシナリオを推測するというバイオインフォマティクスの醍醐味を体験します。
+
+### `3_gpcr.ipynb` — GPCRの系統樹（配列 vs 立体構造）
+
+**25種のヒト Gタンパク質共役受容体（GPCR、Class A/B/C/F）** のアミノ酸配列から系統樹を作り、さらに **AlphaFold 予測立体構造** からも系統樹を作って両者を比べます。配列長が3倍以上ばらつく（348〜1078残基）ため、「先頭から切り出す」近似が通用せず**アラインメントが必須になる**ことを実感する題材でもあります。
+
+- **入門編** — `PairwiseAligner`(BLOSUM62)でペアワイズ距離行列を作り、**中点ルーティング**でNJ系統樹を構築
+- **本格編** — MAFFTで多重整列し、IQ-TREEでアミノ酸置換モデル(LG/WAG/JTT など)による最尤系統樹を推定
+- **発展編（構造系統樹）** — `tmtools`(TM-align)で全構造を総当たり重ね合わせ、**TM-score** に基づく構造距離からNJ系統樹を作り、配列の樹と比較。`py3Dmol` で立体構造を眺めることもできます
+
+**学習のねらい**: 「配列は大きく変わっても立体構造（折りたたみ）は保存されやすい」という重要な性質を、配列の樹と構造の樹を見比べることで体感します。配列・構造・機能(リガンドの種類)が揃って支持する関係こそ最も信頼できる進化シグナルである、という見方を学びます。
 
 ## データセット一覧
 
@@ -117,8 +129,8 @@ lecture/
 | `phylogenetics/birds/birds_cytb.fasta` | 31種の鳥類(+ワニ)の cytb 配列 | 31 |
 | `phylogenetics/birds/birds_cytb_metadata.tsv` | 学名・和名・分類群などのメタ情報 | 31 |
 | `phylogenetics/birds/phylopic/` | 各種のシルエット画像と CC ライセンス情報 | — |
-| `phylogenetics/mammals/mammals_cytb.fasta` | 37種の哺乳類の cytb 配列 | 37 |
-| `phylogenetics/mammals/mammals_cytb_metadata.tsv` | 学名・和名・系統(Mysticeti / Odontoceti …)などのメタ情報 | 37 |
+| `phylogenetics/mammals/mammals_cytb.fasta` | 38種の哺乳類(海生・半海生37種 + 外群ヒト)の cytb 配列 | 38 |
+| `phylogenetics/mammals/mammals_cytb_metadata.tsv` | 学名・和名・系統(Mysticeti / Odontoceti …)などのメタ情報 | 38 |
 | `phylogenetics/mammals/phylopic_mammals/` | 各種のシルエット画像と CC ライセンス情報 | — |
 | `phylogenetics/gpcr/all_GPCRs.fasta` | 25種のヒトGPCR配列(全 Class A) | 25 |
 | `phylogenetics/gpcr/gpcr_list.tsv` | 遺伝子名・UniProt ID・クラス・機能注釈 | 25 |
